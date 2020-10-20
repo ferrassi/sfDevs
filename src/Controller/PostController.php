@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 
 use App\Entity\Post;
 
@@ -41,7 +42,7 @@ class PostController
         }
         EOF;
         $json = json_encode(json_decode($data)->results);
-        $normalizers = array(new ObjectNormalizer(),new  GetSetMethodNormalizer());
+        $normalizers = array(new ObjectNormalizer(),new  GetSetMethodNormalizer(), new ArrayDenormalizer());
         $encoders = array(new JsonEncoder());
         $serializer = new Serializer($normalizers, $encoders);
         $posts = $serializer->deserialize($json, Post::class . '[]', 'json');

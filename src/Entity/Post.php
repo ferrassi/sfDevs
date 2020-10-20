@@ -40,23 +40,11 @@ class Post
     private $publishedAt;
 
 
-    /**
-     * @var Comment[]|ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="Comment",
-     *      mappedBy="post",
-     *      orphanRemoval=true,
-     *      cascade={"persist"}
-     * )
-     * @ORM\OrderBy({"publishedAt": "DESC"})
-     */
-    private $comments;
+
 
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
-        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +72,9 @@ class Post
         $this->publishedAt = $publishedAt;
     }
 
+    /**
+     * @return Collection|Comment[]
+     */
     public function getComments(): Collection
     {
         return $this->comments;
