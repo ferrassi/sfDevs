@@ -10,8 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
- * @ORM\Table(name="symfony_demo_post")
- * @UniqueEntity(fields={"slug"}, errorPath="title", message="post.slug_unique")
+ * @ORM\Table(name="post")
  *
  */
 class Post
