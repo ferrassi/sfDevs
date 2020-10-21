@@ -7,9 +7,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+
 
 use App\Entity\Post;
 
@@ -42,8 +44,9 @@ class PostController
         }
         EOF;
         $json = json_encode(json_decode($data)->results);
-        $normalizers = array(new ObjectNormalizer(),new  GetSetMethodNormalizer(), new ArrayDenormalizer());
+        $normalizers = array(new DateTimeNormalizer(), new ObjectNormalizer(),new  GetSetMethodNormalizer(), new ArrayDenormalizer());
         $encoders = array(new JsonEncoder());
+
         $serializer = new Serializer($normalizers, $encoders);
         $posts = $serializer->deserialize($json, Post::class . '[]', 'json');
 
