@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ORM\Table(name="post")
@@ -19,7 +20,6 @@ class Post
      * @var int
      *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -28,7 +28,6 @@ class Post
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
      */
     private $title;
 
@@ -51,7 +50,10 @@ class Post
     {
         return $this->id;
     }
-
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
     public function getTitle(): ?string
     {
         return $this->title;

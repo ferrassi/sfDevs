@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 
 use App\Entity\Post;
@@ -44,15 +45,28 @@ class PostController
         }
         EOF;
         $json = json_encode(json_decode($data)->results);
-        $normalizers = array(new DateTimeNormalizer(), new ObjectNormalizer(),new  GetSetMethodNormalizer(), new ArrayDenormalizer());
+        $normalizers = array(
+            new DateTimeNormalizer([
+                DateTimeNormalizer::FORMAT_KEY => "d/m/Y",
+            ]),
+            new ObjectNormalizer(
+                null,
+                null,
+                null,
+                new ReflectionExtractor()
+            ),
+            new GetSetMethodNormalizer(),
+            new ArrayDenormalizer(),
+        );      
+        
         $encoders = array(new JsonEncoder());
 
         $serializer = new Serializer($normalizers, $encoders);
-        $posts = $serializer->deserialize($json, Post::class . '[]', 'json');
+        $posts = $serializer->deserialize($json, Post::class . '[]', 'json', [
+            DateTimeNormalizer::FORMAT_KEY => "d/m/Y",
+        ]);
 
 dd($posts); exit;
-        return new Response(
-            $posts
-        );
-    }
+
+    } 
 }
